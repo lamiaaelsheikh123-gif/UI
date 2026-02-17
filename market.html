@@ -1,0 +1,287 @@
+<!-- market.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix · Market</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg: #f9fafc; --surface: #ffffff; --text-primary: #1e1e2f; --text-secondary: #4a4a5e;
+            --accent-1: #ff8a4c; --accent-2: #ff6b2b; --gradient: linear-gradient(135deg, #ff8a4c, #ff4d4d);
+            --card-bg: #ffffff; --border: #eaeef2; --shadow: 0 20px 30px -10px rgba(0,0,0,0.05);
+            --glow: rgba(255,110,64,0.4); --navbar-bg: rgba(255,255,255,0.8); --footer-bg: #1e1e2f; --footer-text: #f0f0fa;
+            --special-gradient: linear-gradient(145deg, #ffb347, #ff6b2b, #cc4d00);
+        }
+        body.dark {
+            --bg: #12121a; --surface: #1e1e2a; --text-primary: #f0f0fa; --text-secondary: #b0b0c0;
+            --accent-1: #ff9f6e; --accent-2: #ff7b3f; --gradient: linear-gradient(135deg, #ff9f6e, #ff5e5e);
+            --card-bg: #252533; --border: #333344; --shadow: 0 20px 30px -10px rgba(0,0,0,0.7);
+            --glow: rgba(255,140,80,0.6); --navbar-bg: rgba(30,30,42,0.9); --footer-bg: #0b0b12; --footer-text: #ddddff;
+            --special-gradient: linear-gradient(145deg, #ffb347, #ff7b3f, #aa3f00);
+        }
+        body { background-color: var(--bg); color: var(--text-primary); line-height: 1.5; transition: 0.3s; }
+        body::before { content: ''; position: fixed; top:0; left:0; width:100%; height:100%; background-image: radial-gradient(circle at 10% 30%, rgba(255,140,64,0.03) 0%, transparent 25%), radial-gradient(circle at 90% 70%, rgba(255,100,100,0.03) 0%, transparent 30%); pointer-events: none; z-index: -1; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+        nav { position: sticky; top:0; backdrop-filter: blur(12px); background: var(--navbar-bg); border-bottom:1px solid var(--border); z-index:100; padding:0.8rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+        .logo-area { display:flex; align-items:center; gap:0.5rem; }
+        .logo-area img { height: 52px; width: auto; border-radius: 12px; }
+        .logo-text h2 { font-size:1.5rem; font-weight:700; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .logo-text span { font-size:0.8rem; color:var(--text-secondary); }
+        .nav-links { display:flex; gap:2rem; align-items:center; flex-wrap:wrap; }
+        .nav-links a { text-decoration:none; color:var(--text-primary); font-weight:500; transition:0.2s; font-size:1rem; }
+        .nav-links a:hover { color:var(--accent-1); }
+        .nav-links a.market-link { font-weight:700; color:var(--accent-1); }
+        .nav-right { display:flex; align-items:center; gap:1.2rem; }
+        .nav-icon { font-size:1.3rem; color:var(--text-primary); cursor:pointer; transition:0.2s; }
+        .nav-icon:hover { color:var(--accent-1); transform:scale(1.05); }
+        .theme-toggle { background:none; border:none; color:var(--text-primary); font-size:1.3rem; cursor:pointer; }
+        .profile-badge { display:flex; align-items:center; gap:0.5rem; background:var(--surface); padding:0.3rem 0.8rem 0.3rem 0.3rem; border-radius:40px; border:1px solid var(--border); cursor:pointer; text-decoration:none; color:var(--text-primary); }
+        .profile-badge img { width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-1); }
+        .profile-badge span { font-weight:600; }
+        .list-item-btn { background:var(--gradient); color:white; border:none; padding:0.5rem 1.5rem; border-radius:40px; font-weight:600; cursor:pointer; transition:0.25s; box-shadow:0 4px 14px var(--glow); font-size:0.9rem; text-decoration:none; display:inline-block; }
+        .list-item-btn:hover { transform:scale(1.05); box-shadow:0 8px 25px var(--glow); }
+
+        /* Page title */
+        .page-header { margin: 2rem 0 1rem; }
+        .page-header h1 { font-size: 2.5rem; font-weight: 700; }
+        .page-header p { color: var(--text-secondary); }
+
+        /* Filter bar (horizontal) */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 1.5rem; background: var(--surface); padding: 1.2rem 1.5rem; border-radius: 60px; margin: 1.5rem 0; border: 1px solid var(--border); align-items: center; }
+        .filter-group { display: flex; align-items: center; gap: 0.5rem; }
+        .filter-group label { font-weight: 600; color: var(--accent-1); }
+        .filter-group select { background: var(--bg); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 30px; color: var(--text-primary); }
+        .price-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .price-tag { background: var(--bg); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; transition: 0.1s; }
+        .price-tag:hover { border-color: var(--accent-1); }
+
+        /* Category pills */
+        .category-pills { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.5rem 0 2rem; }
+        .pill { background: var(--surface); border: 1px solid var(--border); padding: 0.6rem 1.5rem; border-radius: 40px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .pill:hover, .pill.active { background: var(--accent-1); color: white; border-color: var(--accent-1); box-shadow: 0 4px 10px var(--glow); }
+
+        /* Product grid */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 2rem; margin: 2rem 0; }
+        .product-card { background: var(--card-bg); border-radius: 24px; padding: 1.5rem; border: 1px solid var(--border); transition: 0.2s; box-shadow: var(--shadow); position: relative; }
+        .product-card:hover { transform: translateY(-6px); border-color: var(--accent-1); }
+        .badge { position: absolute; top: 1rem; left: 1rem; background: var(--accent-1); color: white; padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .product-img { width: 100%; height: 160px; background: linear-gradient(145deg, #ffdab9, #ffe4cd); border-radius: 18px; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; color: #b95b1d; font-size: 2rem; }
+        .product-title { font-size: 1.2rem; font-weight: 600; }
+        .product-user { color: var(--text-secondary); margin: 0.3rem 0; font-size: 0.9rem; }
+        .product-meta { display: flex; gap: 1rem; color: var(--text-secondary); font-size: 0.8rem; margin: 0.5rem 0; }
+        .product-meta i { margin-right: 0.2rem; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .product-value { font-weight: 700; color: var(--accent-2); font-size: 1.2rem; }
+        .trade-btn { background: var(--gradient); border: none; color: white; padding: 0.5rem 1.2rem; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 8px var(--glow); }
+        .trade-btn:hover { transform: scale(1.05); }
+
+        /* Load more */
+        .load-more { text-align: center; margin: 3rem 0; }
+        .load-more button { background: transparent; border: 2px solid var(--accent-1); color: var(--accent-1); padding: 0.8rem 3rem; border-radius: 60px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .load-more button:hover { background: var(--accent-1); color: white; box-shadow: 0 0 18px var(--glow); }
+
+        footer { background: var(--footer-bg); color: var(--footer-text); padding: 3rem 2rem 1.5rem; margin-top: 4rem; border-radius: 50px 50px 0 0; }
+        .footer-grid { display: grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:2.5rem; margin-bottom:3rem; }
+        .footer-col p, .footer-col a { color:#bdbddb; text-decoration:none; display:block; margin:0.5rem 0; }
+        .footer-col a:hover { color:#ffa56e; }
+        .newsletter input { padding:0.8rem 1rem; border-radius:50px; border:none; width:100%; max-width:260px; margin-top:0.8rem; }
+        .copyright { text-align:center; border-top:1px solid #334; padding-top:2rem; font-size:0.9rem; color:#9d9db5; }
+
+        .chatbot { position:fixed; bottom:30px; right:30px; z-index:999; }
+        .chat-circle { background:var(--gradient); width:65px; height:65px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem; box-shadow:0 8px 20px var(--glow); cursor:pointer; transition:0.2s; }
+        .chat-circle:hover { transform:scale(1.1); }
+        .chat-box { position:absolute; bottom:80px; right:0; width:300px; background:var(--surface); border:1px solid var(--border); border-radius:30px; padding:1.5rem; display:none; box-shadow:var(--shadow); }
+        .chat-box.show { display:block; }
+        .chat-box textarea { width:100%; background:var(--bg); border:1px solid var(--border); border-radius:20px; padding:0.8rem; color:var(--text-primary); resize:none; }
+
+        @media (max-width:900px){ .nav-links{ display:none; } .filter-bar{ flex-direction:column; align-items:stretch; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo-area">
+            <img src="photo_2026-02-17_19-01-20.jpg" alt="Phoenix">
+            <div class="logo-text">
+                <h2>Phoenix</h2>
+                <span>donate & trade</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="market.html" class="market-link">Market</a>
+            <a href="categories.html">Categories</a>
+            <a href="how-it-works.html">How It Works</a>
+            <a href="#about">About</a>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-bell nav-icon"></i>
+            <i class="fas fa-comment-dots nav-icon"></i>
+            <a href="profile.html" class="profile-badge">
+                <img src="https://i.pravatar.cc/36?u=1" alt="avatar">
+                <span>Alex</span>
+            </a>
+            <a href="list-item.html" class="list-item-btn">+ List Item</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Marketplace</h1>
+            <p>Discover items donated or sold by the community.</p>
+        </div>
+
+        <!-- Filter row -->
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label><i class="fas fa-tag"></i> Category</label>
+                <select>
+                    <option>All</option>
+                    <option>Electronics</option>
+                    <option>Fashion</option>
+                    <option>Home</option>
+                    <option>Sports</option>
+                    <option>Books</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fas fa-check-circle"></i> Condition</label>
+                <select>
+                    <option>All</option>
+                    <option>New</option>
+                    <option>Like New</option>
+                    <option>Good</option>
+                    <option>Fair</option>
+                </select>
+            </div>
+            <div class="price-options">
+                <span class="price-tag">All</span>
+                <span class="price-tag">Under $50</span>
+                <span class="price-tag">$50-$200</span>
+                <span class="price-tag">$200-$500</span>
+                <span class="price-tag">$500+</span>
+            </div>
+        </div>
+
+        <!-- Category pills -->
+        <div class="category-pills">
+            <span class="pill active">All Products</span>
+            <span class="pill">Electronics</span>
+            <span class="pill">Fashion</span>
+            <span class="pill">Home</span>
+            <span class="pill">Sports</span>
+            <span class="pill">Books</span>
+            <span class="pill">Toys</span>
+        </div>
+
+        <!-- Product grid -->
+        <div class="product-grid">
+            <div class="product-card">
+                <span class="badge">Like New</span>
+                <div class="product-img"><i class="fas fa-laptop"></i></div>
+                <div class="product-title">MacBook Pro 16" M3 Max</div>
+                <div class="product-user">Alex M.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 234</span> <span><i class="far fa-heart"></i> 18</span></div>
+                <div class="product-footer"><span class="product-value">$2,499</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <span class="badge">Good</span>
+                <div class="product-img"><i class="fas fa-headphones"></i></div>
+                <div class="product-title">Sony WH-1000XM5</div>
+                <div class="product-user">Chris P.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 156</span> <span><i class="far fa-heart"></i> 12</span></div>
+                <div class="product-footer"><span class="product-value">$299</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <span class="badge">Excellent</span>
+                <div class="product-img"><i class="fas fa-camera"></i></div>
+                <div class="product-title">Canon EOS R6 II</div>
+                <div class="product-user">Emma R.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 189</span> <span><i class="far fa-heart"></i> 24</span></div>
+                <div class="product-footer"><span class="product-value">$2,199</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><i class="fas fa-clock"></i></div>
+                <div class="product-title">Annie Watch Ultra 2</div>
+                <div class="product-user">Olivia G.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 89</span> <span><i class="far fa-heart"></i> 7</span></div>
+                <div class="product-footer"><span class="product-value">$549</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><i class="fas fa-gamepad"></i></div>
+                <div class="product-title">PlayStation 5 + Controllers</div>
+                <div class="product-user">David L.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 412</span> <span><i class="far fa-heart"></i> 56</span></div>
+                <div class="product-footer"><span class="product-value">$499</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><i class="fas fa-mobile-alt"></i></div>
+                <div class="product-title">iPhone 15 Pro Max</div>
+                <div class="product-user">Sophia W.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 301</span> <span><i class="far fa-heart"></i> 42</span></div>
+                <div class="product-footer"><span class="product-value">$1,199</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><i class="fas fa-tablet-alt"></i></div>
+                <div class="product-title">iPad Pro 12.9" M2</div>
+                <div class="product-user">Liam K.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 167</span> <span><i class="far fa-heart"></i> 22</span></div>
+                <div class="product-footer"><span class="product-value">$999</span><button class="trade-btn">Trade</button></div>
+            </div>
+            <div class="product-card">
+                <div class="product-img"><i class="fas fa-couch"></i></div>
+                <div class="product-title">Leather Sofa</div>
+                <div class="product-user">Mia T.</div>
+                <div class="product-meta"><span><i class="far fa-eye"></i> 78</span> <span><i class="far fa-heart"></i> 9</span></div>
+                <div class="product-footer"><span class="product-value">$220</span><button class="trade-btn">Trade</button></div>
+            </div>
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more">
+            <button>Load More Products</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col"><h4>Phoenix</h4><p>Reborn from the ordinary.</p><p>© 2025</p></div>
+            <div class="footer-col"><h4>Quick Links</h4><a href="market.html">Market</a><a href="how-it-works.html">How It Works</a><a href="categories.html">Categories</a></div>
+            <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Contact</a><a href="#">FAQs</a></div>
+            <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Blog</a></div>
+            <div class="footer-col newsletter"><h4>Stay updated</h4><input type="email" placeholder="Your email"><button class="btn-glow" style="margin-top:0.8rem;">Subscribe</button></div>
+        </div>
+        <div class="copyright">San Francisco, CA · Terms · Privacy</div>
+    </footer>
+
+    <div class="chatbot">
+        <div class="chat-circle" id="chatIcon"><i class="fas fa-comment"></i></div>
+        <div class="chat-box" id="chatBox">
+            <p><strong>Phoenix Assistant</strong></p>
+            <textarea placeholder="Ask about donations, trades..." rows="3"></textarea>
+            <button class="btn-glow" style="padding:0.5rem; width:100%; margin-top:0.5rem;">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const icon = toggle.querySelector('i');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); } 
+            else { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+        });
+
+        const chatIcon = document.getElementById('chatIcon');
+        const chatBox = document.getElementById('chatBox');
+        chatIcon.addEventListener('click', (e) => { e.stopPropagation(); chatBox.classList.toggle('show'); });
+        document.addEventListener('click', (e) => { if (!chatBox.contains(e.target) && !chatIcon.contains(e.target)) chatBox.classList.remove('show'); });
+    </script>
+</body>
+</html>

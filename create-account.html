@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix · Create Account</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        :root {
+            --bg: #f9fafc; --surface: #ffffff; --text-primary: #1e1e2f; --text-secondary: #4a4a5e;
+            --accent-1: #ff8a4c; --accent-2: #ff6b2b; --gradient: linear-gradient(135deg, #ff8a4c, #ff4d4d);
+            --border: #eaeef2; --shadow: 0 20px 30px -10px rgba(0,0,0,0.05); --glow: rgba(255,110,64,0.4);
+            --input-bg: #ffffff; --card-bg: #ffffff;
+        }
+        body.dark {
+            --bg: #12121a; --surface: #1e1e2a; --text-primary: #f0f0fa; --text-secondary: #b0b0c0;
+            --accent-1: #ff9f6e; --accent-2: #ff7b3f; --gradient: linear-gradient(135deg, #ff9f6e, #ff5e5e);
+            --border: #333344; --shadow: 0 20px 30px -10px rgba(0,0,0,0.7); --glow: rgba(255,140,80,0.6);
+            --input-bg: #252533; --card-bg: #1e1e2a;
+        }
+        body { background-color: var(--bg); color: var(--text-primary); line-height: 1.5; transition: 0.3s; min-height: 100vh; display: flex; flex-direction: column; }
+        body::before { content: ''; position: fixed; top:0; left:0; width:100%; height:100%; background-image: radial-gradient(circle at 10% 30%, rgba(255,140,64,0.03) 0%, transparent 25%), radial-gradient(circle at 90% 70%, rgba(255,100,100,0.03) 0%, transparent 30%); pointer-events: none; z-index: -1; }
+        .nav-mini { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: var(--navbar-bg, rgba(255,255,255,0.8)); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+        .nav-mini .logo-area { display: flex; align-items: center; gap: 0.5rem; }
+        .nav-mini .logo-area img { height: 52px; width: auto; border-radius: 12px; }
+        .nav-mini .logo-text h2 { font-size: 1.5rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-mini .logo-text span { font-size: 0.8rem; color: var(--text-secondary); }
+        .nav-mini .theme-toggle { background: none; border: none; color: var(--text-primary); font-size: 1.3rem; cursor: pointer; }
+
+        .signin-container { display: flex; flex: 1; align-items: center; justify-content: center; padding: 2rem; }
+        .signin-card { display: flex; max-width: 1000px; width: 100%; background: var(--card-bg); border-radius: 48px; box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; backdrop-filter: blur(4px); }
+
+        /* الجهة اليسرى - الصورة */
+        .welcome-side {
+            flex: 1;
+            overflow: hidden;
+            padding: 0;
+            display: flex;
+            align-items: stretch;
+        }
+        .welcome-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .form-side {
+            flex: 1;
+            padding: 3rem 2.5rem;
+            background: var(--card-bg);
+        }
+        .form-side h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .form-side .subhead {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-secondary); }
+        .input-group input { width: 100%; padding: 0.9rem 1.2rem; background: var(--input-bg); border: 1px solid var(--border); border-radius: 60px; font-size: 1rem; color: var(--text-primary); transition: 0.2s; }
+        .input-group input:focus { outline: none; border-color: var(--accent-1); box-shadow: 0 0 0 3px var(--glow); }
+        .row-options { display: flex; justify-content: space-between; align-items: center; margin: 1rem 0 2rem; }
+        .terms { display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+        .terms a { color: var(--accent-1); text-decoration: none; }
+        .btn-signin { width: 100%; background: var(--gradient); color: white; border: none; padding: 0.9rem; border-radius: 60px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.25s; box-shadow: 0 4px 14px var(--glow); margin-bottom: 1.5rem; }
+        .btn-signin:hover { transform: scale(1.02); box-shadow: 0 8px 25px var(--glow); }
+        .or-divider { text-align: center; position: relative; margin: 1.5rem 0; }
+        .or-divider span { background: var(--card-bg); padding: 0 1rem; color: var(--text-secondary); font-size: 0.9rem; position: relative; z-index: 2; }
+        .or-divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border); z-index: 1; }
+        .google-btn { width: 100%; background: transparent; border: 1px solid var(--border); color: var(--text-primary); padding: 0.9rem; border-radius: 60px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.8rem; cursor: pointer; transition: 0.2s; margin-bottom: 2rem; }
+        .google-btn:hover { background: var(--surface); border-color: var(--accent-1); }
+        .google-btn i { color: #DB4437; font-size: 1.2rem; }
+        .login-link { text-align: center; color: var(--text-secondary); }
+        .login-link a { color: var(--accent-1); font-weight: 600; text-decoration: none; }
+        .footer-note { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: var(--text-secondary); }
+        @media (max-width:700px){ .signin-card{ flex-direction:column; } .welcome-side{ min-height:200px; } }
+    </style>
+</head>
+<body>
+    <div class="nav-mini">
+        <div class="logo-area">
+            <img src="photo_2026-02-17_19-01-20.jpg" alt="Phoenix">
+            <div class="logo-text">
+                <h2>Phoenix</h2>
+                <span>donate & trade</span>
+            </div>
+        </div>
+        <div>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
+
+    <div class="signin-container">
+        <div class="signin-card">
+            <!-- الجانب الأيسر: الصورة (تم إزالة كل المحتوى السابق) -->
+            <div class="welcome-side">
+                <img src=" C:\Users\Elsa7er\Desktop\Ui\WhatsApp Image 2026-02-17 at 11.18.53 PM.jpeg" alt="Welcome background">
+            </div>
+            <!-- الجانب الأيمن: نموذج إنشاء الحساب -->
+            <div class="form-side">
+                <h3>Create Account</h3>
+                <div class="subhead">Fill in your details to get started.</div>
+                <div class="input-group"><label>Full Name</label><input type="text" placeholder="John Doe"></div>
+                <div class="input-group"><label>Email Address</label><input type="email" placeholder="hello@phoenix.exchange"></div>
+                <div class="input-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+                <div class="input-group"><label>Confirm Password</label><input type="password" placeholder="••••••••"></div>
+                <div class="row-options">
+                    <label class="terms"><input type="checkbox"> I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                <button class="btn-signin" onclick="window.location.href='dashboard.html'">Create Account</button>
+                <div class="or-divider"><span>OR</span></div>
+                <button class="google-btn"><i class="fab fa-google"></i> Sign up with Google</button>
+                <div class="login-link">Already have an account? <a href="sign.html">Sign In</a></div>
+                <div class="footer-note">Phoenix Exchange System © 2026</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const icon = toggle.querySelector('i');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); } 
+            else { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+        });
+    </script>
+</body>
+</html>

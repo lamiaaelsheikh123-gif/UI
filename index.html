@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix · Donate & Trade</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* LIGHT MODE VARIABLES (default) */
+        :root {
+            --bg: #f9fafc;
+            --surface: #ffffff;
+            --text-primary: #1e1e2f;
+            --text-secondary: #4a4a5e;
+            --accent-1: #ff8a4c; /* orange base */
+            --accent-2: #ff6b2b; /* deeper orange */
+            --gradient: linear-gradient(135deg, #ff8a4c, #ff4d4d);
+            --card-bg: #ffffff;
+            --border: #eaeef2;
+            --shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.05);
+            --glow: rgba(255, 110, 64, 0.4);
+            --navbar-bg: rgba(255, 255, 255, 0.8);
+            --footer-bg: #1e1e2f;
+            --footer-text: #f0f0fa;
+            --special-gradient: linear-gradient(145deg, #ffb347, #ff6b2b, #cc4d00); /* orange to deep orange */
+        }
+
+        /* DARK MODE */
+        body.dark {
+            --bg: #12121a;
+            --surface: #1e1e2a;
+            --text-primary: #f0f0fa;
+            --text-secondary: #b0b0c0;
+            --accent-1: #ff9f6e;
+            --accent-2: #ff7b3f;
+            --gradient: linear-gradient(135deg, #ff9f6e, #ff5e5e);
+            --card-bg: #252533;
+            --border: #333344;
+            --shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+            --glow: rgba(255, 140, 80, 0.6);
+            --navbar-bg: rgba(30, 30, 42, 0.9);
+            --footer-bg: #0b0b12;
+            --footer-text: #ddddff;
+            --special-gradient: linear-gradient(145deg, #ffb347, #ff7b3f, #aa3f00);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.2s;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* subtle background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle at 10% 30%, rgba(255, 140, 64, 0.03) 0%, transparent 25%),
+                              radial-gradient(circle at 90% 70%, rgba(255, 100, 100, 0.03) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* NAVBAR */
+        nav {
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(12px);
+            background: var(--navbar-bg);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo-area img {
+            height: 52px; /* تكبير اللوجو ليتناسب مع باقي الصفحات */
+            width: auto;
+            border-radius: 12px;
+            object-fit: contain;
+            background: transparent;
+        }
+        .logo-text h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .logo-text span {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            color: var(--accent-1);
+        }
+        /* App link bold & orange */
+        .nav-links a[href="#app-download"] {
+            font-weight: 700;
+            color: var(--accent-1);
+            text-shadow: 0 0 5px var(--glow);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .nav-icon {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .nav-icon:hover {
+            color: var(--accent-1);
+            transform: scale(1.05);
+        }
+        .sign-in-btn {
+            background: transparent;
+            border: 1px solid var(--accent-1);
+            color: var(--accent-1);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .sign-in-btn:hover {
+            background: var(--accent-1);
+            color: white;
+            box-shadow: 0 0 15px var(--glow);
+        }
+
+        /* theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        /* buttons general */
+        .btn-glow {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 4px 14px var(--glow);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-glow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px var(--glow);
+        }
+        .btn-outline-glow {
+            background: transparent;
+            border: 2px solid var(--accent-1);
+            color: var(--accent-1);
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline-glow:hover {
+            background: var(--accent-1);
+            color: white;
+            box-shadow: 0 0 18px var(--glow);
+        }
+
+        /* HERO */
+        .hero {
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            max-width: 1000px;
+            margin: 0 auto 1rem;
+            line-height: 1.2;
+        }
+        .hero h1 span {
+            background: var(--special-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            padding: 3rem 0;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* section headings */
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        .section-title span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* NEW SIDEBAR + MAIN CONTENT LAYOUT */
+        .content-with-sidebar {
+            display: flex;
+            gap: 2.5rem;
+            margin: 2rem 0 3rem;
+        }
+
+        /* FILTER SIDEBAR (Categories, Condition, Price Range) */
+        .filter-sidebar {
+            flex: 0 0 260px;
+            background: var(--surface);
+            border-radius: 32px;
+            padding: 1.8rem 1.5rem;
+            border: 1px solid var(--border);
+            align-self: start;
+            position: sticky;
+            top: 100px; /* below navbar */
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .filter-section {
+            margin-bottom: 2.2rem;
+        }
+        .filter-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--accent-1);
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--accent-1);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+        .category-list li {
+            padding: 0.6rem 0.8rem;
+            margin-bottom: 0.3rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .category-list li:hover {
+            background: var(--accent-1);
+            color: white;
+            padding-left: 1.2rem;
+            box-shadow: 0 4px 10px var(--glow);
+        }
+
+        .condition-options, .price-options-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .filter-tag {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            display: inline-block;
+            width: fit-content;
+        }
+        .filter-tag:hover {
+            background: var(--accent-1);
+            color: white;
+            border-color: var(--accent-1);
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px var(--glow);
+        }
+
+        /* MAIN PRODUCT AREA */
+        .products-main {
+            flex: 1;
+        }
+
+        /* product cards grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+            box-shadow: var(--shadow);
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent-1);
+        }
+        .product-img {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(145deg, #ffdab9, #ffe4cd);
+            border-radius: 18px;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b95b1d;
+            font-weight: bold;
+            font-size: 2rem;
+        }
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .product-user {
+            color: var(--text-secondary);
+            margin: 0.3rem 0 0.8rem;
+            font-size: 0.9rem;
+        }
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product-value {
+            font-weight: 700;
+            color: var(--accent-2);
+        }
+        .trade-btn {
+            background: var(--gradient);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px var(--glow);
+        }
+        .trade-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* donate & sell sections */
+        .dual-section {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+        .dual-card {
+            flex: 1 1 300px;
+            background: var(--surface);
+            border-radius: 32px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .dual-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* testimonials */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .testimonial {
+            background: var(--surface);
+            border-radius: 30px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .stars {
+            color: #ffb83b;
+            margin: 1rem 0 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .feature-item {
+            background: var(--surface);
+            padding: 2rem 1.5rem;
+            border-radius: 30px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* app download */
+        .app-download {
+            background: var(--surface);
+            border-radius: 50px;
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+        .app-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .store-btn {
+            background: #1e1e2f;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+        }
+
+        /* footer */
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 4rem;
+            border-radius: 50px 50px 0 0;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        .footer-col p, .footer-col a {
+            color: #bdbddb;
+            text-decoration: none;
+            display: block;
+            margin: 0.5rem 0;
+        }
+        .footer-col a:hover {
+            color: #ffa56e;
+        }
+        .newsletter input {
+            padding: 0.8rem 1rem;
+            border-radius: 50px;
+            border: none;
+            width: 100%;
+            max-width: 260px;
+            margin-top: 0.8rem;
+        }
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #334;
+            padding-top: 2rem;
+            font-size: 0.9rem;
+            color: #9d9db5;
+        }
+
+        /* chatbot icon (floating) */
+        .chatbot {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+        .chat-circle {
+            background: var(--gradient);
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 8px 20px var(--glow);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .chat-circle:hover {
+            transform: scale(1.1);
+        }
+        .chat-box {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 300px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 1.5rem;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+        .chat-box.show {
+            display: block;
+        }
+        .chat-box textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.8rem;
+            color: var(--text-primary);
+            resize: none;
+        }
+
+        /* anchor offset for fixed navbar */
+        section, .filter-sidebar, .products-main, .app-download, #about, #wishlist, #donate, #sell {
+            scroll-margin-top: 100px;
+        }
+
+        @media (max-width: 900px) {
+            .content-with-sidebar {
+                flex-direction: column;
+            }
+            .filter-sidebar {
+                position: static;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo-area">
+            <img src="photo_2026-02-17_19-01-20.jpg" alt="Phoenix Logo">
+            <div class="logo-text">
+                <h2>Phoenix</h2>
+                <span>donate & trade</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#explore">Explore</a>
+            <a href="#donate">Donate</a>
+            <a href="#sell">Sell</a>
+            <a href="#categories">Categories</a>
+            <a href="#wishlist">Wishlist</a>
+            <a href="#about">About Us</a>
+            <a href="#app-download">App</a>
+        </div>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+            <i class="fas fa-bell nav-icon"></i>
+            <i class="fas fa-comment-dots nav-icon"></i>
+            <i class="fas fa-search nav-icon" id="searchIcon"></i>
+            <a href="sign.html" class="sign-in-btn">Sign In</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero with new headline and special gradient -->
+        <section class="hero" id="explore">
+            <h1>Give your items a second life — <span>donate what you no longer need, trade for what you'll love, and rise together.</span></h1>
+            <p>Join a community that gives items new life. Every exchange matters.</p>
+            <div class="hero-buttons">
+                <button class="btn-glow" onclick="window.location.href='#donate'">Start Trading</button>
+                <button class="btn-outline-glow">Learn More</button>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-item"><span class="stat-number">2M+</span> <div class="stat-label">Active Users</div></div>
+            <div class="stat-item"><span class="stat-number">10M+</span> <div class="stat-label">Trades</div></div>
+            <div class="stat-item"><span class="stat-number">99.9%</span> <div class="stat-label">Satisfaction</div></div>
+        </div>
+
+        <!-- New layout: Sidebar filters + Product grid (as in image) -->
+        <div class="content-with-sidebar">
+            <!-- Sidebar with categories, condition, price range (vertical) -->
+            <aside class="filter-sidebar" id="categories">
+                <div class="filter-section">
+                    <h3>Category</h3>
+                    <ul class="category-list">
+                        <li>Electronics</li>
+                        <li>Fashion</li>
+                        <li>Home</li>
+                        <li>Sports</li>
+                        <li>Books</li>
+                        <li>Toys</li>
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <h3>Condition</h3>
+                    <div class="condition-options">
+                        <span class="filter-tag">New</span>
+                        <span class="filter-tag">Like New</span>
+                        <span class="filter-tag">Good</span>
+                        <span class="filter-tag">Fair</span>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h3>Price Range</h3>
+                    <div class="price-options-vertical">
+                        <span class="filter-tag">All</span>
+                        <span class="filter-tag">Under$50</span>
+                        <span class="filter-tag">$50-$200</span>
+                        <span class="filter-tag">$200-$500</span>
+                        <span class="filter-tag">$500+</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main product area -->
+            <main class="products-main">
+                <h2 class="section-title">Featured <span>products</span></h2>
+                <div class="product-grid">
+                    <div class="product-card"><div class="product-img"><i class="fas fa-mug-hot"></i></div><div class="product-title">Espresso Machine</div><div class="product-user">Emma R.</div><div class="product-footer"><span class="product-value">$320</span><button class="trade-btn">Trade</button></div></div>
+                    <div class="product-card"><div class="product-img"><i class="fas fa-shoe-prints"></i></div><div class="product-title">Running Shoes</div><div class="product-user">Chris P.</div><div class="product-footer"><span class="product-value">$95</span><button class="trade-btn">Trade</button></div></div>
+                    <div class="product-card"><div class="product-img"><i class="fas fa-clock"></i></div><div class="product-title">Luxury Watch</div><div class="product-user">David L.</div><div class="product-footer"><span class="product-value">$580</span><button class="trade-btn">Trade</button></div></div>
+                    <div class="product-card"><div class="product-img"><i class="fas fa-couch"></i></div><div class="product-title">Leather Sofa</div><div class="product-user">Olivia G.</div><div class="product-footer"><span class="product-value">$220</span><button class="trade-btn">Trade</button></div></div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Donate & Sell sections -->
+        <div class="dual-section" id="donate">
+            <div class="dual-card"><h3>🚀 Donate items</h3><p>Give belongings a new home. Zero cost, maximum impact.</p><div class="product-grid" style="grid-template-columns:1fr; gap:1rem;"><div class="product-card"><div class="product-title">Kids' Bicycle</div><div class="product-user">Free</div><button class="trade-btn">Donate</button></div><div class="product-card"><div class="product-title">Winter Coat</div><div class="product-user">Free</div><button class="trade-btn">Donate</button></div></div></div>
+            <div class="dual-card" id="sell"><h3>🏷️ Items for sale</h3><p>Quality pre-loved items at fair prices.</p><div class="product-grid" style="grid-template-columns:1fr; gap:1rem;"><div class="product-card"><div class="product-title">Smartphone</div><div class="product-user">$180</div><button class="trade-btn">Buy</button></div><div class="product-card"><div class="product-title">Gaming Chair</div><div class="product-user">$130</div><button class="trade-btn">Buy</button></div></div></div>
+        </div>
+
+        <!-- Wishlist section - تغيير Saved إلى Recommended -->
+        <section id="wishlist">
+            <h2 class="section-title">Your <span>Recommended</span></h2>
+            <div class="product-grid">
+                <div class="product-card"><div class="product-img"><i class="fas fa-camera-retro"></i></div><div class="product-title">Vintage Camera</div><div class="product-user">$210</div><div class="product-footer"><span class="product-value">$210</span><button class="trade-btn">❤️ Recommended</button></div></div>
+                <div class="product-card"><div class="product-img"><i class="fas fa-map"></i></div><div class="product-title">Yoga Mat</div><div class="product-user">$25</div><div class="product-footer"><span class="product-value">$25</span><button class="trade-btn">❤️ Recommended</button></div></div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <h2 class="section-title">What Our <span>Community Says</span></h2>
+        <div class="testimonial-grid">
+            <div class="testimonial"><i class="fas fa-quote-left" style="color: var(--accent-1);"></i><p>"I exchanged my old laptop for a bike. Amazing platform!"</p><div class="stars">★★★★★</div><strong>Sarah Johnson</strong></div>
+            <div class="testimonial"><i class="fas fa-quote-left" style="color: var(--accent-1);"></i><p>"Simple and useful for everyone. I've donated books, sold furniture."</p><div class="stars">★★★★★</div><strong>Michael Chen</strong></div>
+            <div class="testimonial"><i class="fas fa-quote-left" style="color: var(--accent-1);"></i><p>"Helping the environment while helping people."</p><div class="stars">★★★★★</div><strong>Emma Williams</strong></div>
+        </div>
+
+        <!-- Features (expanded) -->
+        <h2 class="section-title">Why Choose <span>Phoenix?</span></h2>
+        <div class="features-grid">
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-recycle"></i></div><h3>Sustainable exchange</h3><p>Reduce waste, circular economy.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Safe community</h3><p>Verified profiles & safety features.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-magic"></i></div><h3>Easy matching</h3><p>Smart algorithm connects you.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div><h3>Nearby users</h3><p>Minimize shipping, meet locally.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-comment-dots"></i></div><h3>Chat system</h3><p>Direct messaging.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-badge-check"></i></div><h3>Verified profiles</h3><p>Trust badges & ratings.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-hand-holding-heart"></i></div><h3>Donation impact</h3><p>Track your goodwill.</p></div>
+            <div class="feature-item"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Fast listing</h3><p>Post items in seconds.</p></div>
+        </div>
+
+        <!-- App download section with id for linking -->
+        <div class="app-download" id="app-download">
+            <div><h2 style="font-size:2rem;">Take Phoenix with you anywhere</h2><p>Fast & Easy · Real-time Chat · Location-based</p></div>
+            <div class="app-buttons"><span class="store-btn"><i class="fab fa-apple"></i> App Store</span><span class="store-btn"><i class="fab fa-google-play"></i> Google Play</span></div>
+        </div>
+
+        <!-- About Us section -->
+        <section id="about" style="margin:3rem 0; background:var(--surface); border-radius: 40px; padding:2.5rem; border:1px solid var(--border);">
+            <h2 class="section-title">About <span>Us</span></h2>
+            <p style="max-width:700px;">Phoenix is where items rise again. We're a community-driven platform for donating and selling pre-loved goods. Based in San Francisco, we aim to make sustainability simple, safe, and social.</p>
+            <p><i class="fas fa-envelope"></i> hello@phoenix.exchange  |  <i class="fas fa-phone"></i> +1 (234) 567-890</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col"><h4>Phoenix</h4><p>Reborn from the ordinary into the extraordinary.</p><p>© 2025 Phoenix</p></div>
+            <div class="footer-col"><h4>Platform</h4><a href="#">How It Works</a><a href="#">Features</a><a href="#">Pricing</a><a href="#">Trust & Safety</a></div>
+            <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Contact Us</a><a href="#">FAQs</a><a href="#">Community</a></div>
+            <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Press Kit</a></div>
+            <div class="footer-col newsletter"><h4>Stay updated</h4><input type="email" placeholder="Enter your email"><button class="btn-glow" style="margin-top:0.8rem;">Subscribe</button></div>
+        </div>
+        <div class="copyright">San Francisco, CA · Terms · Privacy · Cookie Policy</div>
+    </footer>
+
+    <!-- Chatbot icon & box (floating) -->
+    <div class="chatbot">
+        <div class="chat-circle" id="chatIcon"><i class="fas fa-comment"></i></div>
+        <div class="chat-box" id="chatBox">
+            <p><strong>Phoenix Assistant</strong></p>
+            <textarea placeholder="Ask about donations, trades..." rows="3"></textarea>
+            <button class="btn-glow" style="padding:0.5rem; width:100%; margin-top:0.5rem;">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Dark/Light mode toggle
+        const toggle = document.getElementById('themeToggle');
+        const icon = toggle.querySelector('i');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // Chatbot toggle
+        const chatIcon = document.getElementById('chatIcon');
+        const chatBox = document.getElementById('chatBox');
+        chatIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            chatBox.classList.toggle('show');
+        });
+        document.addEventListener('click', (e) => {
+            if (!chatBox.contains(e.target) && !chatIcon.contains(e.target)) {
+                chatBox.classList.remove('show');
+            }
+        });
+
+        // Smooth scroll for navbar links
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Search icon click (demo)
+        document.getElementById('searchIcon').addEventListener('click', ()=> {
+            alert('Search focused (demo)');
+        });
+
+        // Optional: notification and chat icons (just demo)
+        document.querySelectorAll('.nav-right .fa-bell, .nav-right .fa-comment-dots').forEach(icon => {
+            icon.addEventListener('click', () => alert('Notifications / chats demo'));
+        });
+    </script>
+</body>
+</html>

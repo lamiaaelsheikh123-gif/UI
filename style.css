@@ -1,0 +1,176 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI';
+}
+
+body{
+    background:linear-gradient(135deg,#fff,#fff5ef);
+    transition:.4s;
+}
+
+/* NAVBAR */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.logo{
+    font-size:28px;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:black;
+}
+
+/* glowing button */
+
+.install-btn{
+    padding:8px 18px;
+    border-radius:20px;
+    background:orange;
+    color:white !important;
+    box-shadow:0 0 15px orange;
+    transition:.3s;
+}
+
+.install-btn:hover{
+    transform:scale(1.1);
+}
+
+/* HERO */
+
+.hero{
+    height:80vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.title{
+    font-size:70px;
+    animation:fadeUp 1s ease;
+}
+
+.orange{
+    color:orange;
+    font-weight:600;
+    margin-top:10px;
+}
+
+.gradient-text{
+    font-size:28px;
+    margin-top:10px;
+
+    background:linear-gradient(to right,
+    #ffb347,
+    #ff8000,
+    #000);
+
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+/* FEATURES */
+
+.features{
+    padding:80px 10%;
+    text-align:center;
+}
+
+.feature-grid{
+    margin-top:40px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.card{
+    padding:40px;
+    border-radius:20px;
+    background:white;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+    transition:.4s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+/* CONTACT */
+
+.contact{
+    padding:60px;
+    text-align:center;
+}
+
+/* CHATBOT */
+
+.chatbot{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    width:260px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 5px 25px rgba(0,0,0,.2);
+}
+
+.chat-header{
+    background:orange;
+    padding:10px;
+    color:white;
+    border-radius:20px 20px 0 0;
+}
+
+.chat-body{
+    height:150px;
+    padding:10px;
+    overflow:auto;
+}
+
+#chatInput{
+    width:100%;
+    border:none;
+    padding:10px;
+}
+
+/* DARK MODE */
+
+.dark{
+    background:#121212;
+    color:white;
+}
+
+.dark .card{
+    background:#1e1e1e;
+}
+
+/* animation */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
